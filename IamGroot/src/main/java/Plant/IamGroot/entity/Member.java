@@ -1,8 +1,8 @@
 package Plant.IamGroot.entity;
 
-import Plant.IamGroot.dto.MemberDTO;
+import Plant.IamGroot.constant.Role;
+import Plant.IamGroot.dto.MemberFormDto;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,36 +12,32 @@ import lombok.Setter;
 @Table(name = "member_table")
 public class Member {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "MEM_NO")
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "MEM_NAME")
     private String memberName;
 
-    @Column(name = "MEM_ID")
-    private String memberId;
+    @Column(name = "member_email", unique = true)
+    private String memberEmail;
 
-    @Column(name = "MEM_PW")
+    @Column(name = "member_pw")
     private String memberPw;
 
-    @Column(name = "MEM_TEL")
-    private String memberTel;
-
-    @Column(name = "MEM_ADDR")
+    @Column(name = "member_addr")
     private String memberAddr;
 
-    @Column(name = "MEM_ZIPCODE")
-    private String memberZipcode;
+    @Enumerated
+    private Role role;
 
-    public static Member toSaveEntity(MemberDTO memberDTO) {
+    public static Member toSaveEntity(MemberFormDto memberFormDto) {
         Member member = new Member();
-        member.setMemberName(memberDTO.getMember_Name());
-        member.setMemberId(memberDTO.getMember_Id());
-        member.setMemberPw(memberDTO.getMember_Pw());
-        member.setMemberTel(memberDTO.getMember_Tel());
-        member.setMemberAddr(memberDTO.getMember_Addr());
-        member.setMemberZipcode(memberDTO.getMember_Zipcode());
+        member.setMemberName(memberFormDto.getName());
+        member.setMemberEmail(memberFormDto.getEmail());
+//        String password = passwordEncoder.encode(memberDTO.getMember_Pw());
+        member.setMemberPw(memberFormDto.getPassword());
+        member.setMemberAddr(memberFormDto.getAddress());
+        member.setRole(Role.USER);
         return member;
     }
 }

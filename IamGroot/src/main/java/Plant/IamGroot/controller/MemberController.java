@@ -1,45 +1,51 @@
 package Plant.IamGroot.controller;
 
-import Plant.IamGroot.dto.MemberDTO;
+import Plant.IamGroot.dto.MemberFormDto;
+import Plant.IamGroot.entity.Member;
 import Plant.IamGroot.service.MemberService;
-import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/member")
+@RequestMapping("/members")
 @RequiredArgsConstructor
 public class MemberController {
+
     private final MemberService memberService;
+//    private final PasswordEncoder passwordEncoder;
 
-    @GetMapping("/save")
-    public String saveForm(){
-        return "members/save";
+    @GetMapping("/new")
+    public String memberForm(Model model){
+        model.addAttribute("memberFormDto", new MemberFormDto());
+        return "members/memberForm";
     }
 
-    @PostMapping("/save")
-    public String save(@ModelAttribute MemberDTO memberDTO){
-        memberService.save(memberDTO);
-        return "members/home";
-    }
+//    @PostMapping("/new")
+//    public String MemberForm(MemberDTO memberDTO){
+//        Member member = Member.toSaveEntity(memberDTO);
+//        memberService.saveMember(member);
+//
+//        return "redirect:/";
+//    }
 
-    @GetMapping("/login")
-    public String loginForm(){
-        return "members/login";
-    }
-
-    @PostMapping("/login")
-    public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session){
-       MemberDTO loginRersult =  memberService.login(memberDTO);
-       if(loginRersult != null){
-           session.setAttribute("loginId", loginRersult.getMember_Id());
-           return "redirect:/";
-       } else {
-           return "members/login";
-       }
+    @PostMapping("/new")
+    public String newMember(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model){
+        if(bindingResult.hasErrors()){
+            return "members/memberForm";
+        }
+        try {
+            Member member = Member.toSaveEntity(memberFormDto);
+            memberService.saveMember(member);
+        }catch(IllegalStateException e) {
+           model.addAttribute("errorMessage", e.getMessage());
+           return "members/memberForm";
+        }
+        return "redirect:/";
     }
 }
