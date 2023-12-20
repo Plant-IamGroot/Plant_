@@ -2,7 +2,6 @@ package Plant.IamGroot.service;
 
 import Plant.IamGroot.dto.MemberFormDto;
 import Plant.IamGroot.entity.Member;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 
+import javax.transaction.Transactional;
 
 
 @SpringBootTest
@@ -30,7 +30,7 @@ class MemberServiceTest {
         memberFormDto.setName("최병국");
         memberFormDto.setAddress("수원시 권선구 호매실동");
         memberFormDto.setPassword("1234");
-        return Member.toSaveEntity(memberFormDto);
+        return Member.toSaveEntity(memberFormDto, passwordEncoder);
     }
 
     @Test

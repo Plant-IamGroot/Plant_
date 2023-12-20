@@ -2,9 +2,12 @@ package Plant.IamGroot.entity;
 
 import Plant.IamGroot.constant.Role;
 import Plant.IamGroot.dto.MemberFormDto;
-import jakarta.persistence.*;
+
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -30,12 +33,12 @@ public class Member {
     @Enumerated
     private Role role;
 
-    public static Member toSaveEntity(MemberFormDto memberFormDto) {
+    public static Member toSaveEntity(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) {
         Member member = new Member();
         member.setMemberName(memberFormDto.getName());
         member.setMemberEmail(memberFormDto.getEmail());
-//        String password = passwordEncoder.encode(memberDTO.getMember_Pw());
-        member.setMemberPw(memberFormDto.getPassword());
+        String password = passwordEncoder.encode(memberFormDto.getPassword());
+        member.setMemberPw(password);
         member.setMemberAddr(memberFormDto.getAddress());
         member.setRole(Role.USER);
         return member;

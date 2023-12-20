@@ -1,18 +1,18 @@
 package Plant.IamGroot.entity;
 
 import Plant.IamGroot.constant.ItemSellStatus;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @ToString
-@Table(name = "Item")
+@Table(name = "item")
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
