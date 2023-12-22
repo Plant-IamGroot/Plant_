@@ -46,6 +46,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	testImplementation 'org.springframework.security:spring-security-test'
 
 
 	// ⭐ Spring boot 3.x이상에서 QueryDsl 패키지를 정의하는 방법

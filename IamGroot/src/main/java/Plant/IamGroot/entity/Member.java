@@ -30,7 +30,7 @@ public class Member {
     @Column(name = "member_addr")
     private String memberAddr;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     public static Member toSaveEntity(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) {
@@ -40,7 +40,7 @@ public class Member {
         String password = passwordEncoder.encode(memberFormDto.getPassword());
         member.setMemberPw(password);
         member.setMemberAddr(memberFormDto.getAddress());
-        member.setRole(Role.USER);
+        member.setRole(Role.ADMIN);
         return member;
     }
 }
